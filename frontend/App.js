@@ -4,7 +4,9 @@ import { StyleSheet, View, Text } from 'react-native';
 import { useFonts } from 'expo-font';
 import LoginScreen from './apps/screens/LoginScreen/LoginScreen';
 import { ClerkProvider, SignedIn, SignedOut} from '@clerk/clerk-expo'
-import HomeScreen from './apps/screens/Home/HomeScreen';
+import AddScreenNavigation from './apps/navigation/AddScreenNavigation';
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigation from './apps/navigation/AppNavigation';
 
 export default function App() {
 
@@ -21,7 +23,7 @@ export default function App() {
     <ClerkProvider publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}>
     <View style={styles.container}>
     <SignedIn>
-      <HomeScreen/>
+      <AppNavigation/>
     </SignedIn>
     <SignedOut>
       <LoginScreen/>

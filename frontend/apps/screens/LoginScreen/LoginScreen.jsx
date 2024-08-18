@@ -6,9 +6,10 @@ import colors from '../../util/colors';
 import * as WebBrowser from "expo-web-browser";
 import { useWarmUpBrowser } from '../../hooks/useWarmUpBrowser';
 import { useOAuth } from "@clerk/clerk-expo";
-
+import { supabase } from './../../util/SupabaseConfig'
+let username = '';
+export const getUsername = () => username;
 WebBrowser.maybeCompleteAuthSession();
-
 export default function LoginScreen() {
  useWarmUpBrowser();
 
@@ -20,6 +21,26 @@ export default function LoginScreen() {
 
     if (createdSessionId) {
       setActive({ session: createdSessionId })
+      console.log(signUp)
+      if(signUp)
+      {
+        username = (signUp?.emailAddress).split('@')[0];
+      const { data, error } = await supabase
+      .from('Users')
+      .insert([ 
+        {name: signUp?.firstName,
+        email: signUp?.emailAddress,
+        username: username,
+        },
+
+       ])
+      .select()
+
+      if(data){
+        console.log(data);
+      }
+
+      }
     } else {
       // Use signIn or signUp for next steps such as MFA
     }
@@ -54,7 +75,7 @@ export default function LoginScreen() {
             color:colors.WHITE,
             fontSize:35,
           }}>
-          Flixi</Text>
+          Flicks</Text>
           <Text
           style={{
             fontFamily:'Outfit',
@@ -63,9 +84,10 @@ export default function LoginScreen() {
             textAlign: 'center',
             marginTop: 15
           }}
-          >Find someone who can ACTUALLY match YOUR freak - Angel</Text>
+          >Find someone who can ACTUALLY match YOUR freak</Text>
       <TouchableOpacity
       onPress={onPress}
+
       style={{
         display: 'flex',
         alignItems: 'center',
